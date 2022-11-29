@@ -1,10 +1,12 @@
+'''
+Author: Gregory Jones
+Date: 22-11-2022
+Description: Creating an Euler-Maruyama solver and applying it to the Ornstein-Uhlenbeck process
+'''
 import numpy as np
 import matplotlib.pyplot as plt
-from numba import jit
 plt.style.use('dark_background')
-'''
-Creating an Euler-Maruyama solver and applying it to the Ornstein-Uhlenbeck process
-'''
+
 def euler_maruyama(drift, volatility, y0, t0, t1, N):
     '''
     Solves a stochastic differential equation using the Euler-Maruyama method of the form dX = a(X,t)dt + b(X,t)dW were a is the drift function and b is the diffusion function.

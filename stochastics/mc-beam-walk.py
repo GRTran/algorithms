@@ -107,6 +107,8 @@ if __name__=="__main__":
     x = [i for i in range(0,total_attempts)]
     pmf = [analytical_solution(val, total_attempts, prob_step_success) for val in x]
     plt.plot(x, pmf, color='red')
+    plt.xlabel('Number of successful beam walks')
+    plt.ylabel('Probability')
     plt.savefig('distribution_beam_problem.png')
  
     # Now lets run the full analysis for an MC simulation
@@ -125,8 +127,21 @@ if __name__=="__main__":
     vals = [normal_dist.pdf(i) for i in x]
     # print(vals)
     plt.plot(x, vals, color='red')
+    plt.xlabel('Probability 5 successful walks out of 10')
+    plt.ylabel('Frequency of occurrence')
     # print(normal_dist)
     plt.savefig('full_mc_sol.png')
     
     # Lets print general results
     print('Full MC simulation yields: {}+-{}, and analytical yields: {}'.format(statistics.mean(results[5]), statistics.stdev(results[5]), analytical_result))
+    
+    # Lets have a look at the convergence
+    plt.figure()
+    n_realisations = [i*1000 for i in range(1,10)]
+    for ep in n_realisations:
+        results = perform_full_mc_simulation(exact_sucesses, total_attempts, prob_step_success, ep, n_epochs)
+        plt.scatter(ep, (statistics.mean(results[5]) - analytical_result) / analytical_result)
+        
+    plt.xlabel('Number of epochs')
+    plt.ylabel('Percent deviation from analytical')
+    plt.savefig('convergence.png')
